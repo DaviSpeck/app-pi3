@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FcGoogle } from "react-icons/fc";
 import { Link } from 'react-router-dom';
 
 const Register: React.FC = () => {
+
+  const [acceptTerms, setAcceptTerms] = useState<boolean>(false)
+
   return (
     <section className='flex items-center justify-center h-screen' style={{ backgroundColor: '#F4F4F4', maxWidth: 400 }}>
       <div className="flex flex-col items-center justify-center px-6 py-6 mx-auto lg:py-0">
@@ -63,10 +66,12 @@ const Register: React.FC = () => {
                 <div className="flex justify-start items-start mt-3 pl-2">
                   <div className="flex items-center h-5">
                     <input
+                      checked={acceptTerms}
                       id="termsUsePrivacyPolicy"
                       aria-describedby="termsUsePrivacyPolicy"
                       type="checkbox"
                       className="w-5 h-5 rounded bg-white focus:ring-3 focus:ring-primary-300 appearance-none"
+                      onChange={() => setAcceptTerms(!acceptTerms)}
                       required
                     />
                   </div>
