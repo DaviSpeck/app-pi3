@@ -17,7 +17,7 @@ const ForgotPassword: React.FC = () => {
             <div className='flex items-center justify-center h-screen' style={{ backgroundColor: '#F4F4F4', maxWidth: 400 }}>
                 <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
                     <div style={{ width: 140, height: 140, backgroundColor: '#DEDEDE', borderRadius: 140 }} />
-                    <p style={{ color: '#0D0B26' }} className='text-2xl font-semibold mt-4'>Esqueci a Senha</p>
+                    <p style={{ color: '#0D0B26' }} className='text-2xl font-semibold mt-4'>Esqueci a senha</p>
                     <p style={{ color: '#61677D' }} className='text-sm text-center mt-3'>Digite o e-mail para que a sua conta seja validada!</p>
                     <div className="w-full mt-5 sm:max-w-md xl:p-0">
                         <div className="flex flex-col justify-center items-center px-4 md:space-y-6 sm:p-8">
