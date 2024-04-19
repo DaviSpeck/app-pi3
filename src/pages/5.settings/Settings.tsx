@@ -6,8 +6,23 @@ import LockPersonIcon from '@mui/icons-material/LockPerson';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Navbar } from '../../components/header/Navbar';
+import { useAuth } from '../../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const Settings: React.FC = () => {
+
+  const { logout } = useAuth()
+  const navigate = useNavigate()
+
+  async function handleLogout(): Promise<void> {
+    try {
+      await logout()
+      navigate('/')
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   return (
     <div className='bg-gray-200'>
 
@@ -41,7 +56,7 @@ const Settings: React.FC = () => {
               <li className="py-3 sm:py-4">
                 <div className="flex items-center ">
                   <div className="flex-shrink-0 bg-white rounded">
-                    <GppGoodIcon/>
+                    <GppGoodIcon />
                   </div>
                   <div className="flex-1 min-w-0 ms-4">
                     <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
@@ -59,7 +74,7 @@ const Settings: React.FC = () => {
               <li className="py-3 sm:py-4">
                 <div className="flex items-center">
                   <div className="flex-shrink-0 bg-white rounded">
-                    <LockPersonIcon/>
+                    <LockPersonIcon />
                   </div>
                   <div className="flex-1 min-w-0 ms-4">
                     <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
@@ -77,7 +92,7 @@ const Settings: React.FC = () => {
               <li className="py-3 sm:py-4">
                 <div className="flex items-center ">
                   <div className="flex-shrink-0 bg-white rounded">
-                    <NotificationsIcon/>
+                    <NotificationsIcon />
                   </div>
                   <div className="flex-1 min-w-0 ms-4">
                     <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
@@ -92,10 +107,10 @@ const Settings: React.FC = () => {
                   </div>
                 </div>
               </li>
-              <li className="pt-3 pb-0 sm:pt-4">
+              <li onClick={() => handleLogout()} className="pt-3 pb-0 sm:pt-4 cursor-pointer">
                 <div className="flex items-center ">
                   <div className="flex-shrink-0 bg-white rounded">
-                    <LogoutIcon/>
+                    <LogoutIcon />
                   </div>
                   <div className="flex-1 min-w-0 ms-4">
                     <p className="text-sm font-medium text-gray-900 truncate dark:text-white">

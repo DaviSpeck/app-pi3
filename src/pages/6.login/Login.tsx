@@ -1,8 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FcGoogle } from "react-icons/fc";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 
 const Login: React.FC = () => {
+
+  const { currentUser, googleSignin, githubSignin } = useAuth()
+  const navigate = useNavigate()
+
+  async function handleGoogleLogin(): Promise<void> {
+    try {
+      await googleSignin()
+      navigate('/home')
+    } catch {
+      console.error('Failed to log in with Google')
+    }
+  }
+
+  useEffect(() => {
+    if (currentUser) navigate('/')
+  }, [])
+
   return (
     <section className='flex items-center justify-center h-screen' style={{ backgroundColor: '#F4F4F4', maxWidth: 400 }}>
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
@@ -11,7 +29,7 @@ const Login: React.FC = () => {
         <p style={{ color: '#61677D' }} className='text-sm text-center mt-3'>Pare de perder tempo ao fazer as compras, agilize ao máximo com a melhor rota!</p>
         <div className="w-full mt-5 sm:max-w-md xl:p-0">
           <div className="flex flex-col justify-center items-center px-4 md:space-y-6 sm:p-8">
-            <div style={{ backgroundColor: 'white' }} className='flex px-5 py-3 justify-center gap-3 rounded-xl'>
+            <div onClick={handleGoogleLogin} style={{ backgroundColor: 'white' }} className='flex px-5 py-3 justify-center gap-3 rounded-xl'>
               <FcGoogle size={24} />
               <p className='text-md font-medium' style={{ color: '#61677D' }}>Google</p>
             </div>
@@ -54,7 +72,10 @@ const Login: React.FC = () => {
                 </div>
               </div>
               <div>
-                <button type="submit" className="btn-dark mt-2">
+                <button
+                  type="submit"
+                  className="btn-dark mt-2"
+                >
                   Login
                 </button>
                 <p className="text-sm font-light text-center mt-4" style={{ color: '#3B4054' }}>
