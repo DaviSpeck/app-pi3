@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const ForgotPassword: React.FC = () => {
     return (
         <section className='flex items-center justify-center' style={{ backgroundColor: '#F4F4F4' }}>
-            <Link to='/login' className='flex items-center cursor-pointer' style={{ position: 'absolute', top: '1.5rem', left: '1.5rem' }}>
+            <Link to='/' className='flex items-center cursor-pointer' style={{ position: 'absolute', top: '1.5rem', left: '1.5rem' }}>
                 <IoArrowBackSharp size={24} />
             </Link>
             <div className='flex items-center' style={{ position: 'absolute', top: '2.1rem' }}>
