@@ -84,7 +84,9 @@ const Register: React.FC = () => {
               </div>
               <div>
                 <button type="submit" className="btn-dark mt-2">
-                  Cadastrar-se
+                  <Link to="/">
+                    Cadastrar-se
+                  </Link>
                 </button>
                 <p className="text-sm font-light text-center mt-4" style={{ color: '#3B4054' }}>
                   Já tem uma conta?{' '}
