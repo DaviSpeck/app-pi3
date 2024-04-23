@@ -5,6 +5,8 @@ import {
   signInWithPopup,
   GithubAuthProvider,
 } from 'firebase/auth'
+import customerService from '../services/customer.service'
+import { GetCustomerInterface } from '../interfaces/Customer/get-customer.interface'
 
 interface IAuthProviderProps {
   children: JSX.Element
@@ -19,6 +21,16 @@ export function useAuth(): any {
 export function AuthProvider({ children }: IAuthProviderProps): JSX.Element {
   const [currentUser, setCurrentUser] = useState<any>()
   const [loading, setLoading] = useState(true)
+
+  async function loginApi(email: string, password: string): Promise<any> {
+    await customerService.login(email, password).then((response: any) => {
+      setCurrentUser("davispeck86@gmail.com");
+      return response
+    }).catch((error: any) => {
+      setCurrentUser("davispeck86@gmail.com");
+      return error
+    });
+  }
 
   function signup(email: string, password: string): Promise<any> {
     return auth.createUserWithEmailAndPassword(email, password)
@@ -66,6 +78,7 @@ export function AuthProvider({ children }: IAuthProviderProps): JSX.Element {
   const value = {
     currentUser,
     login,
+    loginApi,
     signup,
     googleSignin,
     githubSignin,

@@ -1,10 +1,44 @@
 import React, { useState } from 'react';
 import { FcGoogle } from "react-icons/fc";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import customerService from '../../services/customer.service';
+import { RequestCustomerInterface } from '../../interfaces/Customer/request-customer.interface';
+import { useAuth } from '../../contexts/AuthContext';
 
 const Register: React.FC = () => {
 
-  const [acceptTerms, setAcceptTerms] = useState<boolean>(false)
+  const navigate = useNavigate();
+
+  const [acceptTerms, setAcceptTerms] = useState<boolean>(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const { loginApi } = useAuth()
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!acceptTerms) {
+      console.error('É obrigatório aceitar os termos d euso e políticas de privacidade!');
+    } else {
+      try {
+        const req: RequestCustomerInterface = {
+          customerName: name,
+          customerEmail: email,
+          customerPassword: password,
+          roleID: 3
+        }
+        await customerService.create(req).then(async (response: any) => {
+          await loginApi(email, password).then(() => {
+            navigate('/home');
+          }).catch(() => {
+            navigate('/')
+          })
+        });
+      } catch (error) {
+        console.error('Failed to create customer:', error);
+      }
+    }
+  };
 
   return (
     <section className='flex items-center justify-center h-screen' style={{ backgroundColor: '#F4F4F4', maxWidth: 400 }}>
@@ -24,7 +58,7 @@ const Register: React.FC = () => {
                 <p style={{ fontSize: 14, display: 'inline-block', padding: '2px 15px', borderRadius: '10px', color: '#262626', backgroundColor: '#F4F4F4' }}>Ou</p>
               </div>
             </div>
-            <form className="w-full mt-4 space-y-6" action="#">
+            <form className="w-full mt-4 space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900">
                   Nome
@@ -35,6 +69,8 @@ const Register: React.FC = () => {
                   id="name"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                   placeholder="Nome"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   required
                 />
               </div>
@@ -48,6 +84,8 @@ const Register: React.FC = () => {
                   id="email"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                   placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
@@ -61,6 +99,8 @@ const Register: React.FC = () => {
                   id="password"
                   placeholder="••••••••"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                 />
                 <div className="flex justify-start items-start mt-3 pl-2">
@@ -70,7 +110,7 @@ const Register: React.FC = () => {
                       id="termsUsePrivacyPolicy"
                       aria-describedby="termsUsePrivacyPolicy"
                       type="checkbox"
-                      className="w-5 h-5 rounded bg-white focus:ring-3 focus:ring-primary-300 appearance-none"
+                      className="rounded border-gray-300 text-primary-600 shadow-sm focus:ring-primary-300 focus:border-primary-300"
                       onChange={() => setAcceptTerms(!acceptTerms)}
                       required
                     />
@@ -84,9 +124,7 @@ const Register: React.FC = () => {
               </div>
               <div>
                 <button type="submit" className="btn-dark mt-2">
-                  <Link to="/">
                     Cadastrar-se
-                  </Link>
                 </button>
                 <p className="text-sm font-light text-center mt-4" style={{ color: '#3B4054' }}>
                   Já tem uma conta?{' '}

@@ -1,8 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { IoArrowBackSharp } from "react-icons/io5";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import customerService from '../../services/customer.service';
+import { GetCustomerInterface } from '../../interfaces/Customer/get-customer.interface';
 
 const ForgotPassword: React.FC = () => {
+
+    const navigate = useNavigate();
+
+    const [email, setEmail] = useState('');
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        try {
+            // const customer = await customerService.findByEmail(email);
+            const customer: GetCustomerInterface = {
+                customerID: 1,
+                customerName: "Davi Speck",
+                customerEmail: "davispeck86@gmail.com",
+                role: {
+                    roleID: 3,
+                    roleName: "USER"
+                }
+            }
+            // Deu bom
+            navigate('/reset-password', { state: { customer } });
+        } catch (error) {
+            console.error('Failed to find customer:', error);
+        }
+    };
+
     return (
         <section className='flex items-center justify-center' style={{ backgroundColor: '#F4F4F4' }}>
             <Link to='/' className='flex items-center cursor-pointer' style={{ position: 'absolute', top: '1.5rem', left: '1.5rem' }}>
@@ -21,7 +48,7 @@ const ForgotPassword: React.FC = () => {
                     <p style={{ color: '#61677D' }} className='text-sm text-center mt-3'>Digite o e-mail para que a sua conta seja validada!</p>
                     <div className="w-full mt-5 sm:max-w-md xl:p-0">
                         <div className="flex flex-col justify-center items-center px-4 md:space-y-6 sm:p-8">
-                            <form className="w-full mt-4 space-y-6" action="#">
+                            <form className="w-full mt-4 space-y-6" onSubmit={handleSubmit}>
                                 <div>
                                     <input
                                         type="email"
@@ -29,14 +56,14 @@ const ForgotPassword: React.FC = () => {
                                         id="email"
                                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                                         placeholder="Email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
                                         required
                                     />
                                 </div>
                                 <div>
                                     <button type="submit" className="btn-dark mt-2">
-                                        <Link to='/reset-password'>
-                                            Continuar
-                                        </Link>
+                                        Continuar
                                     </button>
                                 </div>
                             </form>
