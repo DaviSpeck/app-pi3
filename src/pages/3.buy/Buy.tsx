@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Navbar } from '../../components/header/Navbar';
 import { CategoryInterface } from '../../interfaces/Category/category.interface';
 import categoryService from '../../services/category.service';
 
@@ -46,8 +45,6 @@ const Buy: React.FC = () => {
         </button>
 
       </div>
-
-      <Navbar />
 
     </div>
   )

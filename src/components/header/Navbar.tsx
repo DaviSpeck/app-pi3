@@ -3,7 +3,8 @@ import HomeIcon from '@mui/icons-material/Home';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
-import React, { useState } from 'react';
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 interface NavigationItem {
   name: string;
@@ -25,11 +26,7 @@ function classNames(...classes: (string | boolean)[]) {
 }
 
 export const Navbar: React.FC = () => {
-  const [currentTab, setCurrentTab] = useState<string>('/');
-
-  const handleClick = (href: string) => {
-    setCurrentTab(href);
-  };
+  const location = useLocation();
 
   return (
     <nav className="navbar bg-gray-700">
@@ -37,19 +34,18 @@ export const Navbar: React.FC = () => {
         <div className="flex h-16 items-center justify-center ">
           <div className="flex justify-between w-full">
             {navigation.map((item) => (
-              <a
+              <Link
                 key={item.name}
-                href={item.href}
-                onClick={() => handleClick(item.href)}
+                to={item.href}
                 className={classNames(
-                  currentTab === item.href ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                  location.pathname === item.href ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                   'rounded-md px-3 py-2 text-sm font-medium flex flex-col items-center'
                 )}
-                aria-current={currentTab === item.href ? 'page' : undefined}
+                aria-current={location.pathname === item.href ? 'page' : undefined}
               >
                 <div className="mb-1">{item.icon}</div>
                 <span>{item.name}</span>
-              </a>
+              </Link>
             ))}
           </div>
         </div>

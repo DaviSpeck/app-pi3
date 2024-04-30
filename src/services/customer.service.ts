@@ -1,5 +1,6 @@
 import { GetCustomerInterface } from "../interfaces/Customer/get-customer.interface";
 import { RequestCustomerInterface } from "../interfaces/Customer/request-customer.interface";
+import { RequestUpdatePasswordCustomerInterface } from "../interfaces/Customer/request-update-password-customer.interface";
 import { ResponseInterface } from "../interfaces/response.interface";
 import { BaseService } from "./base.service";
 
@@ -44,6 +45,14 @@ class CustomerService extends BaseService {
     async update(customerID: string, req: RequestCustomerInterface): Promise<RequestCustomerInterface> {
         const response = await this.api.put<ResponseInterface>(
             `/customer/update/${customerID}`,
+            req
+        );
+        return this.extractData<RequestCustomerInterface>(response);
+    }
+
+    async updatePassword(req: RequestUpdatePasswordCustomerInterface): Promise<RequestCustomerInterface> {
+        const response = await this.api.put<ResponseInterface>(
+            `/customer/updatePassword?customerID=${req.customerID}&customerPassword=${req.customerPassword}`,
             req
         );
         return this.extractData<RequestCustomerInterface>(response);

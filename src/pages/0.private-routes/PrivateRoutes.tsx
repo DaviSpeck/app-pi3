@@ -3,9 +3,11 @@ import { useAuth } from '../../contexts/AuthContext'
 import { Navbar } from '../../components/header/Navbar'
 
 export default function PrivateRoutes() {
-  const { currentUser } = useAuth()
+  const { currentUser, currentUserDatabase } = useAuth()
 
-  return currentUser ? (
+  console.log(currentUser || currentUserDatabase)
+
+  return (currentUser || currentUserDatabase) ? (
     <>
       <Navbar />
       <Outlet />

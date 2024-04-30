@@ -9,14 +9,12 @@ import Register from './pages/7.register/Register';
 import Login from './pages/6.login/Login';
 import ForgotPassword from './pages/8.forgot-password/ForgotPassword';
 import ResetPassword from './pages/9.reset-password/ResetPassword';
-import { ToastProvider } from './contexts/ToastContext';
 import { AuthProvider } from './contexts/AuthContext';
-import { ApiProvider } from './contexts/ApiContext';
 import AppContextProviders from './contexts/AppContextProvider';
 import PrivateRoutes from './pages/0.private-routes/PrivateRoutes';
 
 function App() {
-  const providers = [ToastProvider, AuthProvider, ApiProvider]
+  const providers = [AuthProvider]
   return (
     <div>
       <Router>

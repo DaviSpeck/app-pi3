@@ -5,7 +5,6 @@ import GppGoodIcon from '@mui/icons-material/GppGood';
 import LockPersonIcon from '@mui/icons-material/LockPerson';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { Navbar } from '../../components/header/Navbar';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -129,8 +128,6 @@ const Settings: React.FC = () => {
           </div>
         </div>
       </div>
-
-      <Navbar />
 
     </div>
   )

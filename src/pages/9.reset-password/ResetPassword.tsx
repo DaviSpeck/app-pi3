@@ -3,6 +3,7 @@ import { IoArrowBackSharp } from "react-icons/io5";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import customerService from '../../services/customer.service';
 import { RequestCustomerInterface } from '../../interfaces/Customer/request-customer.interface';
+import { RequestUpdatePasswordCustomerInterface } from '../../interfaces/Customer/request-update-password-customer.interface';
 
 const ResetPassword: React.FC = () => {
 
@@ -17,13 +18,11 @@ const ResetPassword: React.FC = () => {
         event.preventDefault();
         if (password === confirmPassword) {
             try {
-                const req: RequestCustomerInterface = {
-                    customerName: customer.customerName,
+                const req: RequestUpdatePasswordCustomerInterface = {
+                    customerID: customer.customerID,
                     customerPassword: password,
-                    customerEmail: customer.customerEmail,
-                    roleID: customer.role.roleID
                 }
-                await customerService.update(customer.customerID, req);
+                await customerService.updatePassword(req);
                 // DEU BOM
                 navigate('/');
             } catch (error) {

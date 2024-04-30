@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { GetProductInterface } from "../../interfaces/Product/get-product.interface";
 import productService from "../../services/product.service";
-import { Navbar } from "../../components/header/Navbar";
 import { formatMoneyValue } from "../../utils/formatMoneyValue";
 import { useLocation } from 'react-router-dom';
 import FilterDropdown from "../../components/tableComponents/FilterDropdown";
@@ -328,7 +327,6 @@ const Products: React.FC = () => {
         </div>
       )}
 
-      <Navbar />
     </div>
   );
 };
