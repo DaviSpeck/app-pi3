@@ -10,6 +10,13 @@ class CategoryService extends BaseService {
         );
         return this.extractData<CategoryInterface[]>(response);
     }
+
+    async findById(categoryID: number): Promise<CategoryInterface> {
+        const response = await this.api.get<ResponseInterface>(
+            `/category/findById/?categoryID=${categoryID}`
+        );
+        return this.extractData<CategoryInterface>(response);
+    }
 }
 
 const categoryService = new CategoryService();

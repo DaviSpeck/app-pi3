@@ -1,51 +1,100 @@
-import React from 'react';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Navbar } from '../../components/header/Navbar';
+import React, { useState } from "react";
+import { Navbar } from "../../components/header/Navbar";
+import { GetProductListInterface } from "../../interfaces/ProductList/productList.interface";
+import productListService from "../../services/productList.service";
 
 const Lists: React.FC = () => {
+  const [results, setResults] = useState<GetProductListInterface[]>([]);
+
+  const getData = async (page: number) => {
+    const response = await productListService.listAll();
+  };
+
   return (
-    <div className='bg-gray-200'>
+    <div className="bg-gray-200">
+      <h1 className="flex h-16 items-center justify-center bg-gray-600 text-white">
+        Minhas Listas
+      </h1>
 
-      <h1 className="flex h-16 items-center justify-center bg-gray-600 text-white">Lista</h1>
+      <div className="grid grid-cols-1 place-items-center mt-2 p-3" style={{gap: '12px'}}>
+        <div className="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
 
-      <div className="grid grid-cols-1 place-items-center mt-2 p-3">
+          <div className="p-5 flex place-items-center" style={{display:'flex', gap: '56px'}}>
+            <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+              Lista 1
+            </h5>
 
-        <div className="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex">
-          <img className="rounded w-24 p-3" src="https://guairaclean.com.br/wp-content/uploads/2017/08/produtos-limpeza-concentrados.jpg" alt="" />
-          <div className="flex justify-between p-4">
-            <h5 className="mb-2 mr-4 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Lista 1</h5>
-            <div className="mt-1 ml-3">
-              <ExpandMoreIcon className='bg-gray-600 rounded'/>
+            <div style={{display:'flex', gap: '12px'}}>
+              <a
+                href="/products?buy=true"
+                className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                Editar
+              </a>
+              <a
+                href="/products"
+                className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+              >
+                Excluir
+              </a>
             </div>
           </div>
         </div>
+        <div className="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
 
-        <div className="mt-3 w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex">
-          <img className="rounded w-24 p-3" src="https://www.metroworldnews.com.br/resizer/TH6BtQvfAjgdwiI4IfmSzcz_a1U=/800x0/filters:format(jpg):quality(70)/cloudfront-us-east-1.images.arcpublishing.com/metroworldnews/Z555C6TMAFHKXCZBXJ3TC6DXII.jpg" alt="" />
-          <div className="flex justify-between p-4">
-            <h5 className="mb-2 mr-4 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Lista 2</h5>
-            <div className="mt-1 ml-3">
-              <ExpandMoreIcon className='bg-gray-600 rounded'/>
+          <div className="p-5 flex place-items-center" style={{display:'flex', gap: '56px'}}>
+            <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+              Lista 2
+            </h5>
+
+            <div style={{display:'flex', gap: '12px'}}>
+              <a
+                href="/products?buy=true"
+                className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                Editar
+              </a>
+              <a
+                href="/products"
+                className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+              >
+                Excluir
+              </a>
             </div>
           </div>
         </div>
+        <div className="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
 
-        <div className="mt-3 w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex">
-          <img className="rounded w-24 p-3" src="https://r1web.com.br/univetus/wp-content/uploads/2022/11/dicas-ambiente-Vetus.jpg" alt="" />
-          <div className="flex justify-between p-4">
-            <h5 className="mb-2 mr-4 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Lista 3</h5>
-            <div className="mt-1 ml-3">
-              <ExpandMoreIcon className='bg-gray-600 rounded'/>
+          <div className="p-5 flex place-items-center" style={{display:'flex', gap: '56px'}}>
+            <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+              Lista 3
+            </h5>
+
+            <div style={{display:'flex', gap: '12px'}}>
+              <a
+                href="/products?buy=true"
+                className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                Editar
+              </a>
+              <a
+                href="/products"
+                className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+              >
+                Excluir
+              </a>
             </div>
           </div>
         </div>
+      </div>
 
+      <div className="grid grid-cols-1 place-items-center mb-8 mt-4">
+        <button type="button" className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-100-600 dark:hover:bg-green-700 dark:focus:ring-green-800" data-mdb-ripple-init>Adicionar</button>
       </div>
 
       <Navbar />
-
     </div>
-  )
-}
+  );
+};
 
 export default Lists;

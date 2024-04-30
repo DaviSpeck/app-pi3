@@ -15,7 +15,7 @@ interface NavigationItem {
 const navigation: NavigationItem[] = [
   { name: 'Home', href: '/home', current: false, icon: <HomeIcon /> },
   { name: 'Produtos', href: '/products', current: false, icon: <ShoppingBagIcon /> },
-  { name: 'Comprar', href: '/buy', current: false, icon: <ShoppingCartIcon /> },
+  { name: 'Comprar', href: '/products?buy=true', current: false, icon: <ShoppingCartIcon /> },
   { name: 'Listas', href: '/lists', current: false, icon: <FormatListBulletedIcon /> },
   { name: 'Ajustes', href: '/settings', current: false, icon: <SettingsIcon /> },
 ];

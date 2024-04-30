@@ -13,4 +13,8 @@ export abstract class BaseService {
     protected extractData<T>(response: any): T {
         return response.data || {}
     }
+
+    protected extractDataCategoryById<T>(response: any): T {
+        return response.data.category || {};
+    }
 }

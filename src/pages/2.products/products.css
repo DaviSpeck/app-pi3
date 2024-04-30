@@ -1,0 +1,8 @@
+#items-qtd {
+    position: absolute;
+    width: 21;
+    height: 21;
+    background-color: #ff0000;
+    z-index: 2;
+    border-radius: 21
+}
