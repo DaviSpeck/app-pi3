@@ -155,11 +155,9 @@ const Products: React.FC = () => {
 
   return (
     <div className="bg-gray-200">
-      <h1 className="flex h-16 items-center justify-center bg-gray-600 text-white">
-        Produtos
-      </h1>
+      <h1 className="fixed top-0 left-0 right-0 flex h-16 items-center justify-center bg-white text-black font-bold w-full" style={{ fontSize: 18, zIndex: 10, boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)' }}>PRODUTOS</h1>
       
-      <form className="max-w-md mx-auto w-full p-4">
+      <form className="max-w-md mx-auto w-full p-4 mt-16">
       
         <div className="relative" style={{justifyContent: 'space-between'}}>
           <div className="absolute inset-y-0 flex items-center ps-3">

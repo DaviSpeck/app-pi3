@@ -25,9 +25,9 @@ const Settings: React.FC = () => {
   return (
     <div className='bg-gray-200'>
 
-      <h1 className="flex h-16 items-center justify-center bg-gray-600 text-white">Ajustes</h1>
+      <h1 className="fixed top-0 left-0 right-0 flex h-16 items-center justify-center bg-white text-black font-bold w-full" style={{ fontSize: 18, zIndex: 10, boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)' }}>AJUSTES</h1>
 
-      <div className='p-5'>
+      <div className='p-5 mt-16'>
 
         <div className="w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
           <div className="flex items-center justify-between mb-4">

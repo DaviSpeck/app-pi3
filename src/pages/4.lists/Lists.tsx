@@ -11,11 +11,9 @@ const Lists: React.FC = () => {
 
   return (
     <div className="bg-gray-200">
-      <h1 className="flex h-16 items-center justify-center bg-gray-600 text-white">
-        Minhas Listas
-      </h1>
+      <h1 className="fixed top-0 left-0 right-0 flex h-16 items-center justify-center bg-white text-black font-bold w-full" style={{ fontSize: 18, zIndex: 10, boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)' }}>MINHAS LISTAS</h1>
 
-      <div className="grid grid-cols-1 place-items-center mt-2 p-3" style={{gap: '12px'}}>
+      <div className="grid grid-cols-1 place-items-center mt-18 p-3" style={{gap: '12px'}}>
         <div className="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
 
           <div className="p-5 flex place-items-center" style={{display:'flex', gap: '56px'}}>

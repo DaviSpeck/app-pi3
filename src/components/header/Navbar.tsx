@@ -29,28 +29,46 @@ export const Navbar: React.FC = () => {
   const location = useLocation();
 
   return (
-    <nav className="navbar bg-gray-700">
+    <nav className="navbar bg-white" style={{ boxShadow: '0px -2px 4px rgba(0, 0, 0, 0.1)' }}>
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-center ">
+        <div className="flex h-16 pt-2 items-center justify-center">
           <div className="flex justify-between w-full">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className={classNames(
-                  location.pathname === item.href ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                  'rounded-md px-3 py-2 text-sm font-medium flex flex-col items-center'
-                )}
-                aria-current={location.pathname === item.href ? 'page' : undefined}
-              >
-                <div className="mb-1">{item.icon}</div>
-                <span>{item.name}</span>
-              </Link>
-            ))}
+            {navigation.map((item) => {
+              const isActive = location.pathname === item.href;
+              const hoverStyle = !isActive ? 'hover:text-white' : '';
+              const textStyle = isActive ? 'text-white' : 'text-gray-300';
+
+              return (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className={classNames(
+                    'rounded-md px-3 py-2 text-sm font-medium flex flex-col items-center',
+                    hoverStyle,
+                    textStyle
+                  )}
+                  aria-current={isActive ? 'page' : undefined}
+                >
+                  <div className="mb-1">
+                    {React.cloneElement(item.icon, {
+                      sx: {
+                        color: isActive ? '#1DAEFF' : '#B9BCBE',
+                        transition: 'color 0.3s ease',
+                      },
+                    })}
+                  </div>
+                  <span style={{
+                    color: isActive ? '#1DAEFF' : '#B9BCBE',
+                    transition: 'color 0.3s ease',
+                  }}>
+                    {item.name}
+                  </span>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </div>
     </nav>
   );
 }
-
