@@ -13,17 +13,7 @@ const ForgotPassword: React.FC = () => {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         try {
-            // const customer = await customerService.findByEmail(email);
-            const customer: GetCustomerInterface = {
-                customerID: 1,
-                customerName: "Davi Speck",
-                customerEmail: "davispeck86@gmail.com",
-                role: {
-                    roleID: 3,
-                    roleName: "USER"
-                }
-            }
-            // Deu bom
+            const customer = await customerService.findByEmail(email);
             navigate('/reset-password', { state: { customer } });
         } catch (error) {
             console.error('Failed to find customer:', error);

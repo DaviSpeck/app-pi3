@@ -11,6 +11,95 @@
     z-index: 999;
 }
 
+/* CARD HOME STYLES */
+
+.card-home {
+    background-color: white;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    max-width: 24rem;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+}
+
+.img-card-home {
+    border-radius: 0.75rem;
+}
+
+.title-card-home {
+    padding-top: 1.25rem;
+    margin-bottom: 0.25rem;
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.5rem;
+    letter-spacing: -0.025em;
+    color: black;
+}
+
+.description-card-home {
+    margin-bottom: 1.25rem;
+    font-weight: 400;
+    font-size: 0.875rem;
+    line-height: 1.2rem;
+    color: #666666;
+}
+
+.btn-card-home {
+    background-color: #3C3C43;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 400;
+    text-align: center;
+    color: white;
+    border-radius: 1.5rem;
+}
+
+/* SETTINGS STYLES */
+
+.card-settings {
+    background-color: white;
+    width: 100%;
+    max-width: 28rem;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+}
+
+.name-user {
+    font-size: 0.875rem;
+    font-weight: 700;
+    line-height: 1rem;
+    letter-spacing: -0.025em;
+    color: #181D27;
+    padding-bottom: 6px;
+}
+
+.email-user {
+    font-size: 0.688rem;
+    font-weight: 400;
+    line-height: 1rem;
+    letter-spacing: -0.025em;
+    color: #181D27;
+}
+
+.title-settings {
+    font-size: 0.813rem;
+    font-weight: 500;
+    line-height: 1rem;
+    letter-spacing: -0.025em;
+    color: black;
+}
+
+.description-settings {
+    font-weight: 400;
+    font-size: 0.688rem;
+    line-height: 1.5rem;
+    color: #ABABAB;
+}
+
 body {
     background-color: #e5e7eb;
 }

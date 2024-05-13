@@ -17,13 +17,13 @@ const ResetPassword: React.FC = () => {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (password === confirmPassword) {
+            console.log(customer)
             try {
                 const req: RequestUpdatePasswordCustomerInterface = {
                     customerID: customer.customerID,
                     customerPassword: password,
                 }
                 await customerService.updatePassword(req);
-                // DEU BOM
                 navigate('/');
             } catch (error) {
                 console.error('Failed to update customer: ', error);

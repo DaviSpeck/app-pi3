@@ -22,7 +22,7 @@ class CustomerService extends BaseService {
 
     async findByEmail(customerEmail: string): Promise<GetCustomerInterface> {
         const response = await this.api.get<ResponseInterface>(
-            `/customer/findByEmail/${customerEmail}`
+            `/customer/findByEmail?customerEmail=${customerEmail}`
         );
         return this.extractData<GetCustomerInterface>(response);
     }
