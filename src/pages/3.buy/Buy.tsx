@@ -1,53 +1,170 @@
-import React, { useEffect, useState } from 'react';
-import { CategoryInterface } from '../../interfaces/Category/category.interface';
-import categoryService from '../../services/category.service';
+import React, { useEffect, useState } from "react";
+import { GetProductInterface } from "../../interfaces/Product/get-product.interface";
+import productService from "../../services/product.service";
+import categoryService from "../../services/category.service";
+import { CategoryEnum } from "../../interfaces/Category/category.interface";
+import { useNavigate } from "react-router-dom";
+import ProductsByCategory from "./components/ProductsByCategory";
+import Modal from "./components/Modal";
+
+interface CategoryCards {
+  categoryName: string;
+  wasBought: boolean;
+  imageSrc: string;
+  subtitle: string;
+}
+
+interface ProductList {
+  productID: number;
+  quantity: number;
+}
 
 const Buy: React.FC = () => {
+  const [results, setResults] = useState<GetProductInterface[]>([]);
+  const [buyList, setBuyList] = useState<ProductList[]>([]);
+  const [cardsData, setCardsData] = useState<CategoryCards[]>([]);
+  const [showProducts, setShowProducts] = useState<boolean>(false);
+  const [filteredResults, setFilteredResults] = useState<GetProductInterface[]>([]);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
-  const [results, setResults] = useState<CategoryInterface[]>([])
-  const controller = new AbortController()
+  const controller = new AbortController();
+
+  const categoryDetails: Record<CategoryEnum, { imageSrc: string; subtitle: string }> = {
+    [CategoryEnum.cleaningProducts]: {
+      imageSrc: './img/CategoryCards/cleaningProducts.jpg',
+      subtitle: 'Produtos de limpeza para sua casa'
+    },
+    [CategoryEnum.alcoholicDrinks]: {
+      imageSrc: './img/CategoryCards/alcoholicDrinks.jpg',
+      subtitle: 'Bebidas alcoólicas de diversas marcas'
+    },
+    [CategoryEnum.nonAlcoholicDrinks]: {
+      imageSrc: './img/CategoryCards/nonAlcoholicDrinks.jpg',
+      subtitle: 'Bebidas não alcoólicas para todos os gostos'
+    },
+    [CategoryEnum.personalCare]: {
+      imageSrc: './img/CategoryCards/personalCare.webp',
+      subtitle: 'Produtos de higiene pessoal'
+    },
+    [CategoryEnum.hortifruti]: {
+      imageSrc: './img/CategoryCards/hortifruti.jpg',
+      subtitle: 'Frutas, verduras e legumes frescos'
+    },
+    [CategoryEnum.frozen]: {
+      imageSrc: './img/CategoryCards/frozen.webp',
+      subtitle: 'Congelados e resfriados'
+    },
+    [CategoryEnum.meats]: {
+      imageSrc: './img/CategoryCards/meats.jpg',
+      subtitle: 'Carnes frescas e de qualidade'
+    },
+    [CategoryEnum.cold]: {
+      imageSrc: './img/CategoryCards/cold.jpg',
+      subtitle: 'Frios e laticínios variados'
+    },
+    [CategoryEnum.candy]: {
+      imageSrc: './img/CategoryCards/candy.jpg',
+      subtitle: 'Doces e sobremesas deliciosas'
+    },
+    [CategoryEnum.petShop]: {
+      imageSrc: './img/CategoryCards/petShop.webp',
+      subtitle: 'Produtos para seu pet'
+    },
+    [CategoryEnum.eletronics]: {
+      imageSrc: './img/CategoryCards/eletronics.jpg',
+      subtitle: 'Eletrodomésticos e eletrônicos'
+    },
+    [CategoryEnum.easterEggs]: {
+      imageSrc: './img/CategoryCards/easterEggs.jpg',
+      subtitle: 'Ovos de páscoa e chocolates'
+    },
+    [CategoryEnum.candy2]: {
+      imageSrc: './img/CategoryCards/candy2.jpg',
+      subtitle: 'Guloseimas variadas'
+    }
+  };
+
+  const getData = async () => {
+    const categories = await categoryService.listAll();
+    let cardsData: CategoryCards[] = [];
+    categories.forEach((e: any) => {
+      if (Object.values(CategoryEnum).includes(e.categoryName)) {
+        const details = categoryDetails[e.categoryName as CategoryEnum];
+        cardsData.push({
+          categoryName: e.categoryName,
+          wasBought: false,
+          imageSrc: details.imageSrc,
+          subtitle: details.subtitle
+        });
+      }
+    });
+    setCardsData(cardsData);
+    const response = await productService.listAll();
+    results.length === 0 && setResults(response);
+  };
+
+  const filterProducts = async (categoryName: string) => {
+    setFilteredResults(
+      results.filter((e) => e.category.categoryName === categoryName)
+    );
+    setShowProducts(true);
+  };
 
   useEffect(() => {
-    const getData = async () => {
-      const response = await categoryService.listAll()
-      setResults(response)
-    }
-
-    getData()
-
+    getData();
     return () => {
-      controller.abort()
-    }
-  }, [])
+      controller.abort();
+    };
+  }, []);
 
-  useEffect(() => {
-    console.log(results, 'results')
-  }, [results])
+  const navigate = useNavigate();
 
   return (
-    <div className='bg-slate-200'>
+    <>
+      <header className="fixed top-0 left-0 right-0 flex h-16 items-center justify-center bg-white text-black font-bold w-full uppercase" style={{ fontSize: '1.125rem', zIndex: 10, boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)' }}>
+        Comprar
+      </header>
+      {showProducts && (
+        <ProductsByCategory
+          productsFilteredByCategory={filteredResults}
+          setShowProducts={setShowProducts}
+          setBuyList={setBuyList}
+          buyList={buyList}
+        />
+      )}
+      <div className="container-buy">
 
-<h1 className="fixed top-0 left-0 right-0 flex h-16 items-center justify-center bg-white text-black font-bold w-full" style={{ fontSize: 18, zIndex: 10, boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)' }}>COMPRAR</h1>
-
-      <div className="grid grid-cols-1 place-items-center mt-18 p-3">
-
-        {results.map((item) => (
-          <div className="w-full my-4 max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex">
-            <div className="flex flex-col justify-between p-4">
-              <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{item.categoryName}</h5>
-              <input id="bordered-checkbox-2" type="checkbox" value="" name="bordered-checkbox" className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-            </div>
+        {!showProducts && (
+          <div className="cards-container">
+            {cardsData.map((e, index) => (
+              <div
+                key={index}
+                className="category-card"
+                onClick={() => filterProducts(e.categoryName)}
+              >
+                <img src={e.imageSrc} alt={e.categoryName} />
+                <div className="category-card-content">
+                  <div className="category-card-title">{e.categoryName}</div>
+                  <div className="category-card-subtitle">
+                    {e.subtitle}
+                  </div>
+                </div>
+                <div className="category-card-checkbox">
+                  <input className="custom-checkbox" type="checkbox" checked={e.wasBought} readOnly />
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
-
-        <button className="mt-3 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded inline-flex items-center w-60 h-12 place-content-center" style={{ marginBottom: '5rem' }}>
-          <span>Finalizar compra</span>
-        </button>
-
+        )}
+        {!showProducts && <div className="footer">
+          <button onClick={() => setShowModal(true)}>
+            Finalizar Compra
+          </button>
+        </div>}
+        <Modal showModal={showModal} setShowModal={setShowModal} />
       </div>
-
-    </div>
-  )
-}
+    </>
+  );
+};
 
 export default Buy;

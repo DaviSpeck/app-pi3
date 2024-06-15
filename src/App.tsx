@@ -12,18 +12,38 @@ import ResetPassword from './pages/9.reset-password/ResetPassword';
 import { AuthProvider } from './contexts/AuthContext';
 import AppContextProviders from './contexts/AppContextProvider';
 import PrivateRoutes from './pages/0.private-routes/PrivateRoutes';
+import { ColorRing } from 'react-loader-spinner';
+import { useSelector } from 'react-redux';
+import { IStore } from './store/types';
+import Filter from './pages/10.filter/Filter';
 
 function App() {
-  const providers = [AuthProvider]
+  const providers = [AuthProvider];
+
+  const { spinner } = useSelector((store: IStore) => store.app);
+
   return (
-    <div>
-      <Router>
-        <AppContextProviders components={providers}>
+    <AppContextProviders components={providers}>
+      <div>
+        {spinner && <div className="color-ring-container">
+          <div className="color-ring-backdrop"></div>
+          <ColorRing
+            visible={spinner}
+            height="80"
+            width="80"
+            ariaLabel="color-ring-loading"
+            wrapperStyle={{}}
+            wrapperClass="color-ring-wrapper"
+            colors={['#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF']}
+          />
+        </div>}
+        <Router>
           <Routes>
             <Route element={<PrivateRoutes />}>
               <Route path='/home' element={<Home />} />
               <Route path='/products' element={<Products />} />
               <Route path='/buy' element={<Buy />} />
+              <Route path='/filter' element={<Filter />} />
               <Route path='/lists' element={<Lists />} />
               <Route path='/settings' element={<Settings />} />
             </Route>
@@ -32,9 +52,9 @@ function App() {
             <Route path='/forgot-password' element={<ForgotPassword />} />
             <Route path='/reset-password' element={<ResetPassword />} />
           </Routes>
-        </AppContextProviders>
-      </Router>
-    </div>
+        </Router>
+      </div>
+    </AppContextProviders>
   );
 }
 
