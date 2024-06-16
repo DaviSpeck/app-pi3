@@ -3,21 +3,27 @@ import { IoArrowBackSharp } from "react-icons/io5";
 import { Link, useNavigate } from 'react-router-dom';
 import customerService from '../../services/customer.service';
 import { GetCustomerInterface } from '../../interfaces/Customer/get-customer.interface';
+import { useDispatch } from 'react-redux';
+import { changeSpinner } from '../../store/slices/app.slice';
 
 const ForgotPassword: React.FC = () => {
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [email, setEmail] = useState('');
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        dispatch(changeSpinner(true));
         event.preventDefault();
         try {
-            const customer = await customerService.findByEmail(email);
-            navigate('/reset-password', { state: { customer } });
+            const customerID = await customerService.findCustomerIDByEmail(email);
+            const customer = await customerService.findByID(customerID);
+            navigate('/reset-password', { state: { customerID, customer } });
         } catch (error) {
             console.error('Failed to find customer:', error);
         }
+        dispatch(changeSpinner(false));
     };
 
     return (

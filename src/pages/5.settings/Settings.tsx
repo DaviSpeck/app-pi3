@@ -4,11 +4,15 @@ import { MdOutlineEdit } from "react-icons/md";
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { FaUserCircle } from "react-icons/fa";
+import { useSelector } from 'react-redux';
+import { IStore } from '../../store/types';
 
 const Settings: React.FC = () => {
 
   const { logout } = useAuth()
   const navigate = useNavigate()
+
+  const customer = useSelector((store: IStore) => store.customer);
 
   async function handleLogout(): Promise<void> {
     try {
@@ -35,10 +39,10 @@ const Settings: React.FC = () => {
                   <FaUserCircle color='black' size={57}/>
                   <div className='pl-4'>
                     <p className="name-user">
-                      Nome do usuário
+                      {customer.customerName}
                     </p>
                     <p className="email-user">
-                      Dados da conta
+                      {customer.customerEmail}
                     </p>
                   </div>
                 </div>

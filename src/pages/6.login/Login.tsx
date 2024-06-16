@@ -12,7 +12,7 @@ const Login: React.FC = () => {
 
   async function handleGoogleLogin(): Promise<void> {
     try {
-      await googleSignin()
+      await googleSignin();
       navigate('/home')
     } catch {
       console.error('Failed to log in with Google')
@@ -36,7 +36,7 @@ const Login: React.FC = () => {
   return (
     <section className='flex items-center justify-center h-screen' style={{ backgroundColor: '#F4F4F4', maxWidth: 400 }}>
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
-        <div style={{ width: 140, height: 140, backgroundColor: '#DEDEDE', borderRadius: 140 }} />
+        <img src={"./img/logo.png"} alt={"Logo de O Caminho da Comida"} width={140} height={140} style={{ borderRadius: 140 }} />
         <p style={{ color: '#0D0B26' }} className='text-2xl font-semibold mt-4'>Conectar-se</p>
         <p style={{ color: '#61677D' }} className='text-sm text-center mt-3'>Pare de perder tempo ao fazer as compras, agilize ao máximo com a melhor rota!</p>
         <div className="w-full mt-5 sm:max-w-md xl:p-0">

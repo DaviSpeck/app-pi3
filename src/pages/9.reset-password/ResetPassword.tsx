@@ -4,23 +4,27 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import customerService from '../../services/customer.service';
 import { RequestCustomerInterface } from '../../interfaces/Customer/request-customer.interface';
 import { RequestUpdatePasswordCustomerInterface } from '../../interfaces/Customer/request-update-password-customer.interface';
+import { useDispatch } from 'react-redux';
+import { changeSpinner } from '../../store/slices/app.slice';
 
 const ResetPassword: React.FC = () => {
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const location = useLocation();
-    const { customer } = location.state || {};
+    const { customerID, customer } = location.state || {};
 
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        dispatch(changeSpinner(true));
         event.preventDefault();
         if (password === confirmPassword) {
             console.log(customer)
             try {
                 const req: RequestUpdatePasswordCustomerInterface = {
-                    customerID: customer.customerID,
+                    customerID,
                     customerPassword: password,
                 }
                 await customerService.updatePassword(req);
@@ -31,6 +35,7 @@ const ResetPassword: React.FC = () => {
         } else {
             console.error('As duas senhas devem ser iguais!');
         }
+        dispatch(changeSpinner(false));
     };
 
     return (

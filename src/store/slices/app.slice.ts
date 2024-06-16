@@ -3,7 +3,7 @@ import { appInitialState } from "../initialState/app";
 import { clearRedux } from "../actions";
 
 const appSlice = createSlice({
-    name: 'income',
+    name: 'app',
     initialState: appInitialState,
     reducers: {
         changeSpinner(state, action) {

@@ -1,20 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { IStore } from '../../../store/types';
+import productListService from '../../../services/productList.service';
+import { changeSpinner } from '../../../store/slices/app.slice';
+import { GetProductListInterface } from '../../../interfaces/ProductList/product-list.interface';
 
 interface ModalProps {
+    buyList: ProductListArr[];
     showModal: boolean;
     setShowModal: (show: boolean) => void;
 }
 
-const Modal: React.FC<ModalProps> = ({ showModal, setShowModal }) => {
+const Modal: React.FC<ModalProps> = ({ buyList, showModal, setShowModal }) => {
     if (!showModal) return null;
+
+    const [name, setName] = useState<string>('')
+    const customer = useSelector((store: IStore) => store.customer);
+
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const saveList = async () => {
+        dispatch(changeSpinner(true));
+        const date = new Date();
 
+        const year = date.getFullYear();
+        let month = String(date.getMonth() + 1);
+        if (Number(month) < 10) { month = `0${month}`; }
+        let day = String(date.getDate());
+        if (Number(day) < 10) { day = `0${day}`; }
+
+        const formattedDate = `${year}-${month}-${day}`;
+
+        const response = await productListService.create({
+            productListPurchaseDate: formattedDate,
+            productListTitle: name,
+            customerID: customer.customerID
+        })
+
+        await productListService.addMultipleProducts(response.productListID, buyList)
+
+        dispatch(changeSpinner(false));
+        navigate('/lists')
     }
 
-    const dowloadPath = async () => {
+    const downloadPath = async () => {
 
     }
 
@@ -30,6 +61,8 @@ const Modal: React.FC<ModalProps> = ({ showModal, setShowModal }) => {
                     type="text"
                     placeholder="Nome da Lista"
                     className="w-full p-2 border border-gray-300 rounded mb-4"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                 />
                 <button
                     onClick={async () => saveList()}
@@ -39,7 +72,7 @@ const Modal: React.FC<ModalProps> = ({ showModal, setShowModal }) => {
                     Salvar
                 </button>
                 <button
-                    onClick={async () => dowloadPath()}
+                    onClick={async () => downloadPath()}
                     style={{ backgroundColor: '#1D9100', fontSize: 14 }}
                     className="w-full text-white py-2 rounded-lg mb-2"
                 >

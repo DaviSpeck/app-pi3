@@ -2,12 +2,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { useEffect, useState } from "react";
 import { GetProductInterface } from "../../../interfaces/Product/get-product.interface";
 import { formatMoneyValue } from "../../../utils/formatMoneyValue";
-import { useLocation, useNavigate } from "react-router-dom";
-
-interface ProductList {
-  productID: number;
-  quantity: number;
-}
+import { useNavigate } from "react-router-dom";
 
 const ProductsByCategory = ({
   productsFilteredByCategory,
@@ -22,7 +17,7 @@ const ProductsByCategory = ({
     []
   );
   const [searchValue, setSearchValue] = useState<string>();
-  const [selectedProducts, setSelectedProducts] = useState<ProductList[]>([]);
+  const [selectedProducts, setSelectedProducts] = useState<ProductListArr[]>([]);
 
   const controller = new AbortController();
 
@@ -76,8 +71,8 @@ const ProductsByCategory = ({
     }));
   };
 
-  const addItems = (newItems: ProductList[]) => {
-    setBuyList((prevItems: ProductList[]) => {
+  const addItems = (newItems: ProductListArr[]) => {
+    setBuyList((prevItems: ProductListArr[]) => {
       let updatedItems = [...prevItems];
 
       newItems.forEach((newItem) => {
@@ -85,15 +80,15 @@ const ProductsByCategory = ({
           (item) => item.productID === newItem.productID
         );
 
-        if (newItem.quantity === 0) {
+        if (newItem.productQuantity === 0) {
           if (existingItemIndex !== -1) {
-            // Remove product if quantity is 0
+            // Remove product if productQuantity is 0
             updatedItems.splice(existingItemIndex, 1);
           }
         } else {
           if (existingItemIndex !== -1) {
-            // Replace quantity if product already exists in the buyList
-            updatedItems[existingItemIndex].quantity = newItem.quantity;
+            // Replace productQuantity if product already exists in the buyList
+            updatedItems[existingItemIndex].productQuantity = newItem.productQuantity;
           } else {
             // Add new product if it does not exist in the buyList
             updatedItems.push(newItem);
@@ -106,11 +101,11 @@ const ProductsByCategory = ({
   };
 
   const handleConfirm = () => {
-    const selectedProductsArray: ProductList[] = Object.entries(quantities)
-      .filter(([productID, quantity]) => quantity >= 0) // Ensure it includes 0 quantities for removal
-      .map(([productID, quantity]) => ({
+    const selectedProductsArray: ProductListArr[] = Object.entries(quantities)
+      .filter(([productID, productQuantity]) => productQuantity >= 0) // Ensure it includes 0 quantities for removal
+      .map(([productID, productQuantity]) => ({
         productID: Number(productID),
-        quantity: quantity,
+        productQuantity: productQuantity,
       }));
 
     setSelectedProducts(selectedProductsArray);
@@ -138,7 +133,7 @@ const ProductsByCategory = ({
     const initialQuantities = productsFilteredByCategory.reduce(
       (acc: any, product: any) => {
         const existingItem = buyList.find((item: any) => item.productID === product.productID);
-        acc[product.productID] = existingItem ? existingItem.quantity : 0;
+        acc[product.productID] = existingItem ? existingItem.productQuantity : 0;
         return acc;
       },
       {} as { [key: number]: number }
@@ -297,7 +292,7 @@ const ProductsByCategory = ({
                 </button>
                 <input
                   type="text"
-                  id="quantity-input"
+                  id="productQuantity-input"
                   value={quantities[item.productID]}
                   readOnly
                   className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

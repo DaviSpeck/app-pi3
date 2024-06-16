@@ -4,10 +4,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import customerService from '../../services/customer.service';
 import { RequestCustomerInterface } from '../../interfaces/Customer/request-customer.interface';
 import { useAuth } from '../../contexts/AuthContext';
+import { useDispatch } from 'react-redux';
+import { changeSpinner } from '../../store/slices/app.slice';
 
 const Register: React.FC = () => {
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [acceptTerms, setAcceptTerms] = useState<boolean>(false);
   const [name, setName] = useState('');
@@ -16,6 +19,7 @@ const Register: React.FC = () => {
   const { loginApi } = useAuth()
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    dispatch(changeSpinner(true));
     event.preventDefault();
     if (!acceptTerms) {
       console.error('É obrigatório aceitar os termos d euso e políticas de privacidade!');
@@ -38,12 +42,13 @@ const Register: React.FC = () => {
         console.error('Failed to create customer:', error);
       }
     }
+    dispatch(changeSpinner(false));
   };
 
   return (
     <section className='flex items-center justify-center h-screen' style={{ backgroundColor: '#F4F4F4', maxWidth: 400 }}>
       <div className="flex flex-col items-center justify-center px-6 py-6 mx-auto lg:py-0">
-        <div style={{ width: 140, height: 140, backgroundColor: '#DEDEDE', borderRadius: 140 }} />
+        <img src={"./img/logo.png"} alt={"Logo de O Caminho da Comida"} width={140} height={140} style={{ borderRadius: 140 }} />
         <p style={{ color: '#0D0B26' }} className='text-2xl font-semibold mt-4'>Cadastrar-se</p>
         <p style={{ color: '#61677D' }} className='text-sm text-center mt-3'>Pare de perder tempo ao fazer as compras, agilize ao máximo com a melhor rota!</p>
         <div className="w-full mt-5 sm:max-w-md xl:p-0">
@@ -124,7 +129,7 @@ const Register: React.FC = () => {
               </div>
               <div>
                 <button type="submit" className="btn-dark mt-2">
-                    Cadastrar-se
+                  Cadastrar-se
                 </button>
                 <p className="text-sm font-light text-center mt-4" style={{ color: '#3B4054' }}>
                   Já tem uma conta?{' '}

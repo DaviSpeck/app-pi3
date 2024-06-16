@@ -13,18 +13,18 @@ class CustomerService extends BaseService {
         return this.extractData<GetCustomerInterface[]>(response);
     }
 
-    async findByID(customerID: string): Promise<GetCustomerInterface> {
+    async findByID(customerID: number): Promise<GetCustomerInterface> {
         const response = await this.api.get<ResponseInterface>(
-            `/customer/findById/${customerID}`
+            `/customer/findById?customerID=${customerID}`
         );
         return this.extractData<GetCustomerInterface>(response);
     }
 
-    async findByEmail(customerEmail: string): Promise<GetCustomerInterface> {
+    async findCustomerIDByEmail(customerEmail: string): Promise<number> {
         const response = await this.api.get<ResponseInterface>(
-            `/customer/findByEmail?customerEmail=${customerEmail}`
+            `/customer/findCustomerIdByEmail?customerEmail=${customerEmail}`
         );
-        return this.extractData<GetCustomerInterface>(response);
+        return this.extractData<number>(response);
     }
 
     async login(customerEmail: string, customerPassword: string): Promise<GetCustomerInterface> {

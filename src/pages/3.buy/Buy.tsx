@@ -3,9 +3,12 @@ import { GetProductInterface } from "../../interfaces/Product/get-product.interf
 import productService from "../../services/product.service";
 import categoryService from "../../services/category.service";
 import { CategoryEnum } from "../../interfaces/Category/category.interface";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ProductsByCategory from "./components/ProductsByCategory";
 import Modal from "./components/Modal";
+import { useDispatch } from "react-redux";
+import { changeSpinner } from "../../store/slices/app.slice";
+import productListService from "../../services/productList.service";
 
 interface CategoryCards {
   categoryName: string;
@@ -14,18 +17,17 @@ interface CategoryCards {
   subtitle: string;
 }
 
-interface ProductList {
-  productID: number;
-  quantity: number;
-}
-
 const Buy: React.FC = () => {
   const [results, setResults] = useState<GetProductInterface[]>([]);
-  const [buyList, setBuyList] = useState<ProductList[]>([]);
+  const [buyList, setBuyList] = useState<ProductListArr[]>([]);
   const [cardsData, setCardsData] = useState<CategoryCards[]>([]);
   const [showProducts, setShowProducts] = useState<boolean>(false);
   const [filteredResults, setFilteredResults] = useState<GetProductInterface[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
+
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const { productList } = location.state || {};
 
   const controller = new AbortController();
 
@@ -85,6 +87,7 @@ const Buy: React.FC = () => {
   };
 
   const getData = async () => {
+    dispatch(changeSpinner(true));
     const categories = await categoryService.listAll();
     let cardsData: CategoryCards[] = [];
     categories.forEach((e: any) => {
@@ -101,6 +104,7 @@ const Buy: React.FC = () => {
     setCardsData(cardsData);
     const response = await productService.listAll();
     results.length === 0 && setResults(response);
+    dispatch(changeSpinner(false));
   };
 
   const filterProducts = async (categoryName: string) => {
@@ -110,12 +114,17 @@ const Buy: React.FC = () => {
     setShowProducts(true);
   };
 
+  const existentProductList = async () => {
+    setBuyList(productList.products);
+  }
+
   useEffect(() => {
     getData();
+    productList && existentProductList();
     return () => {
       controller.abort();
     };
-  }, []);
+  }, [productList]);
 
   const navigate = useNavigate();
 
@@ -157,11 +166,19 @@ const Buy: React.FC = () => {
           </div>
         )}
         {!showProducts && <div className="footer">
-          <button onClick={() => setShowModal(true)}>
+          <button onClick={async () => {
+            if (productList) {
+              dispatch(changeSpinner(true));
+              await productListService.addMultipleProducts(productList.productListID, buyList)
+              dispatch(changeSpinner(false));
+            } else {
+              setShowModal(true);
+            }
+          }}>
             Finalizar Compra
           </button>
         </div>}
-        <Modal showModal={showModal} setShowModal={setShowModal} />
+        <Modal buyList={buyList} showModal={showModal} setShowModal={setShowModal} />
       </div>
     </>
   );
