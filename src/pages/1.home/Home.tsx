@@ -4,6 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useDispatch } from 'react-redux';
 import customerService from '../../services/customer.service';
 import { changeCustomerEmail, changeCustomerID, changeCustomerName, changeRoleID, changeRoleName } from '../../store/slices/customer.slice';
+import { RequestCustomerInterface } from '../../interfaces/Customer/request-customer.interface';
 
 const Home: React.FC = () => {
   const { currentUser, currentUserDatabase } = useAuth()
@@ -11,7 +12,21 @@ const Home: React.FC = () => {
   const dispatch = useDispatch();
 
   const getUserData = async () => {
-    const customerID = await customerService.findCustomerIDByEmail(currentUser ? currentUser.email : currentUserDatabase);
+    let customerID = await customerService.findCustomerIDByEmail(currentUser ? currentUser.email : currentUserDatabase).then((response) => {
+      return response
+    }).catch(async () => {
+      const req: RequestCustomerInterface = {
+        customerName: currentUser.displayName,
+        customerEmail: currentUser.email,
+        customerPassword: '123456',
+        roleID: 3
+      }
+      await customerService.create(req)
+      return undefined
+    });
+    if (!customerID) {
+      customerID = await customerService.findCustomerIDByEmail(currentUser ? currentUser.email : currentUserDatabase)
+    }
     const response = await customerService.findByID(customerID)
 
     dispatch(changeCustomerID(customerID));

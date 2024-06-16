@@ -5,9 +5,6 @@ import { Navbar } from '../../components/header/Navbar'
 export default function PrivateRoutes() {
   const { currentUser, currentUserDatabase } = useAuth()
 
-  console.log(currentUser)
-  console.log(currentUserDatabase)
-
   return (currentUser || currentUserDatabase) ? (
     <>
       <Navbar />
