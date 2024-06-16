@@ -57,9 +57,12 @@ const Lists: React.FC = () => {
 
   const getProductLists = async () => {
     dispatch(changeSpinner(true));
-    const response = await productListService.listAllByCustomerID(customer.customerID)
-    setLists(response);
-    dispatch(changeSpinner(false));
+    await productListService.listAllByCustomerID(customer.customerID).then((response) => {
+      setLists(response);
+      dispatch(changeSpinner(false));
+    }).catch(() => {
+      dispatch(changeSpinner(false));
+    })
   };
 
   useEffect(() => {

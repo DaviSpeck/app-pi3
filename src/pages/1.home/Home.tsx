@@ -58,7 +58,7 @@ const Home: React.FC = () => {
             <img className="img-card-home" src="./img/list.jpg" alt="List" />
             <h1 className="title-card-home">Listas</h1>
             <p className="description-card-home">Veja as suas listas salvas, organize sua rotina de compras.</p>
-            <Link to="/products" className="btn-card-home">
+            <Link to="/lists" className="btn-card-home">
               Ver listas
             </Link>
           </div>
