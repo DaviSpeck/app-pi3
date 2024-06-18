@@ -22,33 +22,38 @@ const ListItem: React.FC<ListItemProps> = ({ item, getProductLists }) => {
 
   const downloadPath = async () => {
     dispatch(changeSpinner(true));
-    const bestPath = await supermarketService.getBestPathByProductListID(item.productListID)
+    try {
+      const bestPath = await supermarketService.getBestPathByProductListID(item.productListID);
 
-    const response = await fetch('https://davispeck.pythonanywhere.com/generate_gif', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        path: bestPath
-      })
-    });
+      const response = await fetch('https://davispeck.pythonanywhere.com/generate_gif', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          path: bestPath
+        })
+      });
 
-    if (response.ok) {
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.style.display = 'none';
-      a.href = url;
-      a.download = 'path.gif';
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-    } else {
-      console.error('Failed to download the file');
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = 'path.gif';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      } else {
+        console.error('Failed to download the file');
+      }
+    } catch (error) {
+      console.error('Error downloading path:', error);
+    } finally {
+      dispatch(changeSpinner(false));
     }
-    dispatch(changeSpinner(false));
   }
 
   return (
