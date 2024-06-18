@@ -21,6 +21,7 @@ const ListItem: React.FC<ListItemProps> = ({ item, getProductLists }) => {
   const dispatch = useDispatch();
 
   const downloadPath = async () => {
+    dispatch(changeSpinner(true));
     const bestPath = await supermarketService.getBestPathByProductListID(item.productListID)
 
     const response = await fetch('https://davispeck.pythonanywhere.com/generate_gif', {
@@ -47,6 +48,7 @@ const ListItem: React.FC<ListItemProps> = ({ item, getProductLists }) => {
     } else {
       console.error('Failed to download the file');
     }
+    dispatch(changeSpinner(false));
   }
 
   return (
