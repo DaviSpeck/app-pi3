@@ -112,6 +112,14 @@ const Buy: React.FC = () => {
       results.filter((e) => e.category.categoryName === categoryName)
     );
     setShowProducts(true);
+
+    setCardsData((prevCardsData) =>
+      prevCardsData.map((card) =>
+        card.categoryName === categoryName
+          ? { ...card, wasBought: true }
+          : card
+      )
+    );
   };
 
   const existentProductList = async () => {

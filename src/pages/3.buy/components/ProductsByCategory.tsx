@@ -142,7 +142,8 @@ const ProductsByCategory = ({
   }, [productsFilteredByCategory, buyList]);
 
   return (
-    <div className="bg-gray-200" style={{ marginTop: 80 }}>
+    <div className="bg-gray-200" style={{ marginTop: '5rem' }}>
+
       <form className="max-w-md mx-auto w-full p-4">
         <div className="relative" style={{ justifyContent: "space-between" }}>
           <div className="absolute inset-y-0 flex items-center ps-3">
@@ -165,7 +166,7 @@ const ProductsByCategory = ({
           <input
             type="search"
             id="default-search"
-            className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="block w-full pl-10 pr-12 py-4 text-sm text-gray-900 border border-gray-300 rounded-full bg-white focus:ring-blue-500 focus:border-blue-500"
             placeholder="Pesquisar..."
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
@@ -176,14 +177,6 @@ const ProductsByCategory = ({
 
       <div className="grid grid-cols-1 place-items-center mt-4">
         <div className="sm:flex sm:flex-1 sm:items-center sm:justify-between">
-          {/*}
-          <p className="text-sm mb-2 text-gray-700 mr-8">
-          Mostrando <span className="font-medium">1</span> até{" "}
-          <span className="font-medium">8</span> de{" "}
-          <span className="font-medium">97</span> resultados
-          </p>
-          {*/}
-
           <div>
             <nav
               className="isolate inline-flex -space-x-px rounded-md shadow-sm"
@@ -210,8 +203,8 @@ const ProductsByCategory = ({
                     getData(pageNumber);
                   }}
                   className={`relative inline-flex items-center ${pageNumber === currentPage
-                    ? "bg-indigo-600"
-                    : "text-gray-900"
+                      ? "bg-indigo-600"
+                      : "text-gray-900"
                     } px-4 py-2 text-sm font-semibold ${pageNumber === currentPage ? "text-white" : "text-gray-900"
                     } ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0`}
                 >
@@ -263,8 +256,8 @@ const ProductsByCategory = ({
                   </p>
                 </div>
               </div>
-              <h3 className="mt-4 text-sm text-gray-700">{item.productName}</h3>
-              <p className="mt-1 text-lg font-medium text-gray-900">
+              <h3 className="mt-4 text-sm text-center text-gray-700">{item.productName}</h3>
+              <p className="mt-1 text-lg text-center font-medium text-gray-900">
                 {formatMoneyValue(item.productPrice)}
               </p>
               <div className="relative flex items-center mt-1">
@@ -272,10 +265,10 @@ const ProductsByCategory = ({
                   type="button"
                   id="decrement-button"
                   onClick={() => handleDecrement(item.productID)}
-                  className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700"
+                  className="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100"
                 >
                   <svg
-                    className="w-3 h-3 text-gray-900 dark:text-white"
+                    className="w-3 h-3 text-gray-900"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -295,7 +288,7 @@ const ProductsByCategory = ({
                   id="productQuantity-input"
                   value={quantities[item.productID]}
                   readOnly
-                  className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50 border-x-0 border-gray-300 h-10 text-center text-gray-900 w-full placeholder-gray-400"
                   placeholder="0"
                   required
                 />
@@ -303,10 +296,10 @@ const ProductsByCategory = ({
                   type="button"
                   id="increment-button"
                   onClick={() => handleIncrement(item.productID)}
-                  className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:outline-none"
+                  className="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 focus:outline-none"
                 >
                   <svg
-                    className="w-3 h-3 text-gray-900 dark:text-white"
+                    className="w-3 h-3 text-gray-900"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -329,7 +322,7 @@ const ProductsByCategory = ({
 
       <div className="flex justify-center">
         <button
-          className="mt-3 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded inline-flex items-center w-60 h-12 place-content-center"
+          className="mt-3 bg-black border-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded inline-flex items-center w-60 h-12 place-content-center"
           style={{ marginBottom: "5rem" }}
           onClick={() => {
             handleConfirm();

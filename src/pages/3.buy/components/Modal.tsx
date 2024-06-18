@@ -46,7 +46,7 @@ const Modal: React.FC<ModalProps> = ({ buyList, showModal, setShowModal }) => {
     }
 
     const downloadPath = async () => {
-
+        
     }
 
     return (
@@ -71,13 +71,13 @@ const Modal: React.FC<ModalProps> = ({ buyList, showModal, setShowModal }) => {
                 >
                     Salvar
                 </button>
-                <button
+                {/*<button
                     onClick={async () => downloadPath()}
                     style={{ backgroundColor: '#1D9100', fontSize: 14 }}
                     className="w-full text-white py-2 rounded-lg mb-2"
                 >
                     Baixar rota
-                </button>
+                </button>*/}
                 <button
                     style={{ backgroundColor: '#D61F1F', fontSize: 14 }}
                     className="w-full text-white py-2 rounded-lg"
