@@ -8,6 +8,7 @@ import { IStore } from "../../store/types";
 import { useNavigate } from "react-router-dom";
 import { formatDate } from "../../utils/formatDate";
 import { changeSpinner } from "../../store/slices/app.slice";
+import supermarketService from "../../services/supermarket.service";
 
 interface ListItemProps {
   item: GetProductListInterface;
@@ -19,9 +20,38 @@ const ListItem: React.FC<ListItemProps> = ({ item, getProductLists }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const downloadPath = async () => {
+    const bestPath = await supermarketService.getBestPathByProductListID(item.productListID)
+
+    const response = await fetch('https://davispeck.pythonanywhere.com/generate_gif', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        path: bestPath
+      })
+    });
+
+    if (response.ok) {
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = 'path.gif';
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } else {
+      console.error('Failed to download the file');
+    }
+  }
+
   return (
-    <div onClick={() => setIsOpen(!isOpen)} className="bg-white p-6 rounded-2xl shadow-md mb-4">
-      <div className="flex justify-between items-center">
+    <div className="bg-white p-6 rounded-2xl shadow-md mb-4">
+      <div onClick={() => setIsOpen(!isOpen)} className="flex justify-between items-center">
         <div className="flex items-center">
           <div>
             <div style={{ fontSize: 18 }} className="font-semibold">{item.productListTitle}</div>
@@ -35,7 +65,7 @@ const ListItem: React.FC<ListItemProps> = ({ item, getProductLists }) => {
       {isOpen && (
         <div className="mt-4 space-y-2">
           <button onClick={() => navigate('/buy', { state: { productList: item } })} style={{ backgroundColor: '#0D0B26', fontSize: 14 }} className="w-full text-white py-2 rounded-xl">Editar</button>
-          <button style={{ backgroundColor: '#1D9100', fontSize: 14 }} className="w-full text-white py-2 rounded-xl">Baixar rota</button>
+          <button onClick={async () => downloadPath()} style={{ backgroundColor: '#1D9100', fontSize: 14 }} className="w-full text-white py-2 rounded-xl">Baixar rota</button>
           <button onClick={async () => {
             dispatch(changeSpinner(true));
             await productListService.deleteListByProductListID(item.productListID)
