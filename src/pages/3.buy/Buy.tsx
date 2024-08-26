@@ -177,8 +177,9 @@ const Buy: React.FC = () => {
           <button onClick={async () => {
             if (productList) {
               dispatch(changeSpinner(true));
-              await productListService.addMultipleProducts(productList.productListID, buyList)
+              await productListService.addMultipleProducts(productList.productListID, buyList);
               dispatch(changeSpinner(false));
+              navigate('/lists')
             } else {
               setShowModal(true);
             }
