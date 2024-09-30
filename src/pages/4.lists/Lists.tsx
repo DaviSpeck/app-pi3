@@ -9,11 +9,48 @@ import { useNavigate } from "react-router-dom";
 import { formatDate } from "../../utils/formatDate";
 import { changeSpinner } from "../../store/slices/app.slice";
 import supermarketService from "../../services/supermarket.service";
+import { toast } from "react-toastify";
+import { HandThumbUpIcon, ShoppingBagIcon } from "@heroicons/react/20/solid";
 
 interface ListItemProps {
   item: GetProductListInterface;
   getProductLists: () => void;
 }
+
+interface ReadyListProps {
+  title: string;
+  likes: number;
+}
+const ReadyList: React.FC<ReadyListProps> = ({ title, likes }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  return (
+    <div onClick={() => setIsOpen(!isOpen)} className="bg-white p-6 rounded-2xl shadow-md mb-4">
+      <div className="flex justify-between items-center">
+        <div className="flex items-center">
+          <div>
+            <div style={{ fontSize: 18 }} className="font-semibold">{title}</div>
+            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+              <HandThumbUpIcon className="h-4 w-4 mr-1" style={{color: '#29b50d'}}/>
+              <p style={{ fontSize: 14 }} className="text-gray-500">{likes} pessoas curtiram essa lista</p>
+            </div>
+          </div>
+        </div>
+        <button onClick={() => setIsOpen(!isOpen)}>
+          {isOpen ? <BsChevronUp size={20} /> : <BsChevronDown size={20} />}
+        </button>
+      </div>
+      {isOpen && (
+        <div className="mt-4 space-y-2">
+          <button onClick={() => navigate('/ready-list')} style={{ backgroundColor: '#0D0B26', fontSize: 14 }} className="w-full text-white py-2 rounded-xl">Ver lista</button>
+          <button style={{ backgroundColor: '#1daeff', fontSize: 14 }} className="w-full text-white py-2 rounded-xl">Adicionar em MINHAS LISTAS</button>
+          <button style={{ backgroundColor: '#1D9100', fontSize: 14 }} className="w-full text-white py-2 rounded-xl">Baixar rota</button>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const ListItem: React.FC<ListItemProps> = ({ item, getProductLists }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -77,6 +114,7 @@ const ListItem: React.FC<ListItemProps> = ({ item, getProductLists }) => {
             dispatch(changeSpinner(true));
             await productListService.deleteListByProductListID(item.productListID)
             await getProductLists()
+            toast.success("Lista excluída!")
             dispatch(changeSpinner(false));
           }} style={{ backgroundColor: '#D61F1F', fontSize: 14 }} className="w-full text-white py-2 rounded-xl">Excluir</button>
         </div>
@@ -121,6 +159,15 @@ const Lists: React.FC = () => {
         >
           <FaPlus size={25} />
         </button>
+
+        <div className="flex-row mt-10 mb-5 justify-center" style={{display: 'flex', flexDirection: 'row'}}>
+          <p style={{fontSize: 18}}>Listas prontas para você</p>
+          <ShoppingBagIcon className="h-6 w-6 pl-1" style={{color:'#1daeff'}}/>
+        </div>
+        <ReadyList title="Churrasco de Final de Semana" likes={326} />
+        <ReadyList title="Almoço fitness" likes={108} />
+        <ReadyList title="Hamburguer caseiro" likes={203} />
+        <ReadyList title="Escondidinho de Carne" likes={89} />
       </div>
     </>
   );

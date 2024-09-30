@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { toast } from 'react-toastify';
 
 const Login: React.FC = () => {
 
@@ -13,9 +14,11 @@ const Login: React.FC = () => {
   async function handleGoogleLogin(): Promise<void> {
     try {
       await googleSignin();
+      toast.success('Login realizado com sucesso!')
       navigate('/home')
     } catch {
       console.error('Failed to log in with Google')
+      toast.error('Erro ao realizar Login!');
     }
   }
 
@@ -25,11 +28,18 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    try {
-      await loginApi(email, password);
+    const responseApi = await loginApi(email, password);
+    console.log("response login: ", responseApi)
+
+    if (!responseApi?.response) {
+      toast.success('Login realizado com sucesso!');
       navigate('/home');
-    } catch (error) {
-      console.error('Failed to log in:', error);
+    } else if (responseApi?.response.data.status === 404) {
+      toast.error('Erro ao realizar Login! Usuário não encontrado.');
+    } else if (responseApi?.response.data.status === 401) {
+      toast.error("Usuário ou senha incorretos")
+    } else {
+      toast.error('Erro ao realizar Login! Tente novamente mais tarde.');
     }
   };
 

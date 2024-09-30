@@ -5,6 +5,7 @@ import { IStore } from '../../../store/types';
 import productListService from '../../../services/productList.service';
 import { changeSpinner } from '../../../store/slices/app.slice';
 import { GetProductListInterface } from '../../../interfaces/ProductList/product-list.interface';
+import { toast } from 'react-toastify';
 
 interface ModalProps {
     buyList: ProductListArr[];
@@ -42,6 +43,7 @@ const Modal: React.FC<ModalProps> = ({ buyList, showModal, setShowModal }) => {
         await productListService.addMultipleProducts(response.productListID, buyList)
 
         dispatch(changeSpinner(false));
+        toast.success("Lista salva com sucesso!")
         navigate('/lists')
     }
 

@@ -9,6 +9,7 @@ import Modal from "./components/Modal";
 import { useDispatch } from "react-redux";
 import { changeSpinner } from "../../store/slices/app.slice";
 import productListService from "../../services/productList.service";
+import { toast } from "react-toastify";
 
 interface CategoryCards {
   categoryName: string;
@@ -136,6 +137,22 @@ const Buy: React.FC = () => {
 
   const navigate = useNavigate();
 
+  const handleFinishPurchase = async () => {
+    if (buyList.length === 0) {
+      toast.warning("A lista está vazia, adicione produtos antes de finalizar a compra.");
+      console.log(buyList)
+      return;
+    }
+    if (productList) {
+      dispatch(changeSpinner(true));
+      await productListService.addMultipleProducts(productList.productListID, buyList)
+      dispatch(changeSpinner(false));
+      navigate('/lists')
+    } else {
+      setShowModal(true);
+    }
+  };
+
   return (
     <>
       <header className="fixed top-0 left-0 right-0 flex h-16 items-center justify-center bg-white text-black font-bold w-full uppercase" style={{ fontSize: '1.125rem', zIndex: 10, boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)' }}>
@@ -174,16 +191,7 @@ const Buy: React.FC = () => {
           </div>
         )}
         {!showProducts && <div className="footer">
-          <button onClick={async () => {
-            if (productList) {
-              dispatch(changeSpinner(true));
-              await productListService.addMultipleProducts(productList.productListID, buyList);
-              dispatch(changeSpinner(false));
-              navigate('/lists')
-            } else {
-              setShowModal(true);
-            }
-          }}>
+          <button onClick={handleFinishPurchase}>
             Finalizar Compra
           </button>
         </div>}

@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaUserCircle } from "react-icons/fa";
 import { useSelector } from 'react-redux';
 import { IStore } from '../../store/types';
+import { toast } from 'react-toastify';
 
 const Settings: React.FC = () => {
 
@@ -17,10 +18,26 @@ const Settings: React.FC = () => {
   async function handleLogout(): Promise<void> {
     try {
       await logout()
+      toast.success("Logout realizado com sucesso!")
       navigate('/')
     } catch (err) {
       console.error(err)
     }
+  }
+
+  async function handleSupport(): Promise<void> {
+    try {
+      const email = "suporte@ocdc.com";
+      const subject = "Preciso de ajuda!";
+      const body = "Tente descrever o seu problema em uma mensagem:";
+      const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}&body=${body}`;
+      window.open(gmailUrl, '_blank');
+    } catch (err) {
+      console.error(err)
+    }
+  }
+  async function handleChangePassword(): Promise<void> {
+    navigate('/reset-password-logged', { state: { customerID: customer.customerID, customerEmail: customer.customerEmail } });
   }
 
   return (
@@ -54,23 +71,7 @@ const Settings: React.FC = () => {
 
         <div className="card-settings">
           <ul className="space-y-6">
-            <li>
-              <div className="flex items-center justify-between">
-                <div className='flex items-center'>
-                  <img src='../.././img/Settings/my-account.png' />
-                  <div className='pl-4'>
-                    <p className="title-settings">
-                      Minha conta
-                    </p>
-                    <p className="description-settings">
-                      Dados da conta
-                    </p>
-                  </div>
-                </div>
-                <MdOutlineKeyboardArrowRight color='#ABABAB' size={28} />
-              </div>
-            </li>
-            <li>
+            <li onClick={() => {navigate('/tutorial')}}>
               <div className="flex items-center justify-between">
                 <div className='flex items-center'>
                   <img src='../.././img/Settings/tutorial.png' />
@@ -86,7 +87,7 @@ const Settings: React.FC = () => {
                 <MdOutlineKeyboardArrowRight color='#ABABAB' size={28} />
               </div>
             </li>
-            <li>
+            <li onClick={handleChangePassword}>
               <div className="flex items-center justify-between">
                 <div className='flex items-center'>
                   <img src='../.././img/Settings/change-password.png' />
@@ -102,7 +103,7 @@ const Settings: React.FC = () => {
                 <MdOutlineKeyboardArrowRight color='#ABABAB' size={28} />
               </div>
             </li>
-            <li>
+            <li onClick={handleSupport}>
               <div className="flex items-center justify-between">
                 <div className='flex items-center'>
                   <img src='../.././img/Settings/support.png' />
@@ -111,7 +112,7 @@ const Settings: React.FC = () => {
                       Suporte
                     </p>
                     <p className="description-settings">
-                      Dúvidas e Sugestões
+                      Dúvidas e Sugestões (E-mail)
                     </p>
                   </div>
                 </div>

@@ -6,6 +6,7 @@ import { RequestCustomerInterface } from '../../interfaces/Customer/request-cust
 import { useAuth } from '../../contexts/AuthContext';
 import { useDispatch } from 'react-redux';
 import { changeSpinner } from '../../store/slices/app.slice';
+import { toast } from 'react-toastify';
 
 const Register: React.FC = () => {
 
@@ -22,7 +23,7 @@ const Register: React.FC = () => {
     dispatch(changeSpinner(true));
     event.preventDefault();
     if (!acceptTerms) {
-      console.error('É obrigatório aceitar os termos d euso e políticas de privacidade!');
+      console.error('É obrigatório aceitar os termos de uso e políticas de privacidade!');
     } else {
       try {
         const req: RequestCustomerInterface = {
@@ -33,6 +34,7 @@ const Register: React.FC = () => {
         }
         await customerService.create(req).then(async (response: any) => {
           await loginApi(email, password).then(() => {
+            toast.success('Cadastro realizado com sucesso!');
             navigate('/home');
           }).catch(() => {
             navigate('/')
@@ -40,6 +42,7 @@ const Register: React.FC = () => {
         });
       } catch (error) {
         console.error('Failed to create customer:', error);
+        toast.error('Erro ao realizar o cadastro!');
       }
     }
     dispatch(changeSpinner(false));

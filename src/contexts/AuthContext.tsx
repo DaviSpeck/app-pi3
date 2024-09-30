@@ -24,7 +24,7 @@ export function AuthProvider({ children }: IAuthProviderProps): JSX.Element {
   const [loading, setLoading] = useState(true)
 
   async function loginApi(email: string, password: string): Promise<any> {
-    await customerService.login(email, password).then((response: any) => {
+    return await customerService.login(email, password).then((response: any) => {
       setCurrentUserDatabase(response.customerEmail);
       return response
     }).catch((error: any) => {

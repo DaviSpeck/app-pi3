@@ -7,6 +7,7 @@ import { GetProductInterface } from '../../interfaces/Product/get-product.interf
 import { useDispatch } from 'react-redux';
 import { changeSpinner } from '../../store/slices/app.slice';
 import { NumericFormat } from 'react-number-format';
+import { toast } from 'react-toastify';
 
 const Filter: React.FC = () => {
     const navigate = useNavigate();
@@ -53,6 +54,9 @@ const Filter: React.FC = () => {
     };
 
     const onFilter = () => {
+
+        const isFilterApplie = selectedCategory !== '' || priceRange.min !== '' || priceRange.max !== '' || availability.min !== '' || availability.max !== '';
+
         const filteredData = data.filter((product: GetProductInterface) => {
             const isCategoryMatch = !selectedCategory || product.category.categoryName === selectedCategory;
             const isPriceMatch = (!priceRange.min || product.productPrice >= Number(priceRange.min)) &&
@@ -61,6 +65,12 @@ const Filter: React.FC = () => {
                 (!availability.max || product.productQuantity <= Number(availability.max));
             return isCategoryMatch && isPriceMatch && isAvailabilityMatch;
         });
+
+        if (isFilterApplie && filteredData.length < data.length) {
+            toast.success("Filtro aplicado com sucesso!");
+        } else {
+            toast.info("Nenhum filtro foi aplicado.");
+        }
 
         navigate('/products', { state: { data, filteredData, categoriesNames, selectedCategory, priceRange, availability } });
     }
