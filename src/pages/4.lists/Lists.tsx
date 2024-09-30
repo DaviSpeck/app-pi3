@@ -149,7 +149,7 @@ const Lists: React.FC = () => {
       <header className="fixed top-0 left-0 right-0 flex h-16 items-center justify-center bg-white text-black font-bold w-full uppercase" style={{ fontSize: '1.125rem', zIndex: 10, boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)' }}>
         Listas de Compras
       </header>
-      <div className="p-4" style={{ marginTop: 80 }}>
+      <div className="p-4" style={{ marginTop: 80, marginBottom: 80 }}>
         {lists.map((item, index) => (
           <ListItem key={index} item={item} getProductLists={() => getProductLists()} />
         ))}
